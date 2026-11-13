@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -29,4 +31,7 @@ public class Livro {
 
     @Column(nullable = false, precision = 10, scale = 2)
     private float preco;
+
+    @Column(name = "ano_publicacao",nullable = false)
+    private LocalDate anoPublicacao;
 }
