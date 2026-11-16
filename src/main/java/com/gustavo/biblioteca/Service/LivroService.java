@@ -37,6 +37,33 @@ public class LivroService {
         return livroRepository.findAll();
     }
 
+    public Livro atualizar(Long id, Livro livro){
+        Livro livroOld = buscarPorId(id);
+
+        if (livro.getTitulo() != null && !livro.getTitulo().isBlank()){
+            livroOld.setTitulo(livro.getTitulo());
+        }
+        if (livro.getAutor() != null && !livro.getAutor().isBlank()){
+            livroOld.setAutor(livro.getAutor());
+        }
+        if (livro.getCodigoIsbn() != null && livro.getCodigoIsbn().length() == 13){
+            livroOld.setCodigoIsbn(livro.getCodigoIsbn());
+        }
+        if (livro.getPreco() > 0){
+            livroOld.setPreco(livro.getPreco());
+        }
+        if (livro.getAnoPublicacao() != null){
+            livroOld.setAnoPublicacao(livro.getAnoPublicacao());
+        }
+
+        return livroRepository.save(livroOld);
+    }
+
+    public void deletar(Long id){
+        Livro livro = buscarPorId(id);
+        livroRepository.delete(livro);
+    }
+
     private void validaLivro(Livro livro){
         Objects.requireNonNull(livro, "O Livro não pode ser vazio.");
         Objects.requireNonNull(livro.getTitulo(),"O Titulo precisa ser preenchido.");

@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface LivroRepository extends JpaRepository<Livro, Long> {
 
-    Livro findByIsbn(long isbn);
+    Livro findByIsbn(String isbn);
 
 }

@@ -27,7 +27,7 @@ public class Livro {
     private String autor;
 
     @Column(name = "codigo_isbn", nullable = false, length = 255)
-    private Long codigoIsbn;
+    private String codigoIsbn;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private float preco;
