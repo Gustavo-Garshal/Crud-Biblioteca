@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -30,7 +31,7 @@ public class Livro {
     private String codigoIsbn;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private float preco;
+    private BigDecimal preco;
 
     @Column(name = "ano_publicacao",nullable = false)
     private LocalDate anoPublicacao;

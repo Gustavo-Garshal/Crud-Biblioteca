@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LivroController {
 
-    private LivroService livroService;
+    private final LivroService livroService;
 
     @PostMapping
     public ResponseEntity<Livro> cadastrarLivro(@RequestBody Livro livro){
@@ -30,12 +30,17 @@ public class LivroController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Livro> buscarLivro(@RequestParam Long id){
+    public ResponseEntity<Livro> buscarLivro(@PathVariable Long id){
         return  ResponseEntity.ok().body(livroService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<Livro> atualizarLivro(@RequestParam Long id, @RequestBody Livro livro){
+    public  ResponseEntity<Livro> atualizarLivro(@PathVariable Long id, @RequestBody Livro livro){
         return ResponseEntity.accepted().body(livroService.atualizar(id, livro));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Livro> deletarLivro(@PathVariable Long id){
+        return ResponseEntity.noContent().build();
     }
 }

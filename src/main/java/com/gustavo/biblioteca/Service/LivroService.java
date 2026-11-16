@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.ToIntFunction;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class LivroService {
     private final LivroRepository livroRepository;
 
     public Livro salvar(Livro livro){
-        if (Objects.nonNull(livroRepository.findByIsbn(livro.getCodigoIsbn()))) {
+        if (Objects.nonNull(livroRepository.findByCodigoIsbn(livro.getCodigoIsbn()))) {
             throw new RuntimeException("Livro já cadastrado com esse código ISBN");
         }
 
@@ -40,16 +42,16 @@ public class LivroService {
     public Livro atualizar(Long id, Livro livro){
         Livro livroOld = buscarPorId(id);
 
-        if (livro.getTitulo() != null && !livro.getTitulo().isBlank()){
+        if (!livro.getTitulo().isBlank()){
             livroOld.setTitulo(livro.getTitulo());
         }
-        if (livro.getAutor() != null && !livro.getAutor().isBlank()){
+        if (!livro.getAutor().isBlank()){
             livroOld.setAutor(livro.getAutor());
         }
-        if (livro.getCodigoIsbn() != null && livro.getCodigoIsbn().length() == 13){
+        if (livro.getCodigoIsbn().length() == 13){
             livroOld.setCodigoIsbn(livro.getCodigoIsbn());
         }
-        if (livro.getPreco() > 0){
+        if (livro.getPreco().compareTo(BigDecimal.ZERO) > 0) {
             livroOld.setPreco(livro.getPreco());
         }
         if (livro.getAnoPublicacao() != null){
@@ -67,9 +69,24 @@ public class LivroService {
     private void validaLivro(Livro livro){
         Objects.requireNonNull(livro, "O Livro não pode ser vazio.");
         Objects.requireNonNull(livro.getTitulo(),"O Titulo precisa ser preenchido.");
+        if (livro.getTitulo().isBlank()){
+            throw new IllegalArgumentException("O Titulo precisa ser preenchido.");
+        }
+
         Objects.requireNonNull(livro.getAutor(), "O Autor precisa ser preenchido");
+        if (livro.getAutor().isBlank()){
+            throw new IllegalArgumentException("O Titulo precisa ser preenchido.");
+        }
+
         Objects.requireNonNull(livro.getCodigoIsbn(),"O Codigo ISBN precisa ser preenchido");
+        if (livro.getCodigoIsbn().length() != 13){
+            throw new RuntimeException("Codigo ISBN precisa ter 13 digitos");
+        }
+
         Objects.requireNonNull(livro.getPreco(),"O livro precisa ter um Preço");
+        if (livro.getPreco().compareTo(BigDecimal.ZERO) <= 0){
+            throw new RuntimeException("Preco tem que ser maior que zero");
+        }
         Objects.requireNonNull(livro.getAnoPublicacao(),"O Ano de Publicação precisa ser preenchido");
     }
 
