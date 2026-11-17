@@ -42,13 +42,13 @@ public class LivroService {
     public Livro atualizar(Long id, Livro livro){
         Livro livroOld = buscarPorId(id);
 
-        if (!livro.getTitulo().isBlank()){
+        if (livro.getTitulo() != null && !livro.getTitulo().isBlank()){
             livroOld.setTitulo(livro.getTitulo());
         }
-        if (!livro.getAutor().isBlank()){
+        if (livro.getAutor() != null && !livro.getAutor().isBlank()){
             livroOld.setAutor(livro.getAutor());
         }
-        if (livro.getCodigoIsbn().length() == 13){
+        if (livro.getCodigoIsbn() != null && livro.getCodigoIsbn().length() == 13){
             livroOld.setCodigoIsbn(livro.getCodigoIsbn());
         }
         if (livro.getPreco().compareTo(BigDecimal.ZERO) > 0) {
